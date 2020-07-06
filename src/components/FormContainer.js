@@ -8,5 +8,5 @@ export const FormContainer = styled.div`
     width: 100vw;
     align-items: center;
     justify-content: center;
-    margin-top: 5%;
+    margin-top: 6%;
 `

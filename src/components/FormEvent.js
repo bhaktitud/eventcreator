@@ -3,7 +3,8 @@ import {
     Form,
     Button,
     Col,
-    Alert
+    Alert,
+    Spinner
 } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { createEvent } from '../store/actions'
@@ -15,6 +16,7 @@ export default function FormEvent() {
     const dispatch = useDispatch()
     const allInputs = { imgUrl: '' }
     const submitStatus = { status: false }
+    const loadStatus = {status: false}
     const [title, setTitle] = useState('')
     const [location, setLocation] = useState('')
     const [participant, setParticipant] = useState('')
@@ -25,6 +27,7 @@ export default function FormEvent() {
     const [imageAsFile, setImageAsFile] = useState('')
     const [show, setShow] = useState(false)
     const [submit, setSubmit] = useState(submitStatus)
+    const [isLoading, setIsLoading] = useState(loadStatus)
 
     const handleSubmit = (e) => {
         const form = e.currentTarget;
@@ -33,7 +36,6 @@ export default function FormEvent() {
           e.stopPropagation();
         } else {
             e.preventDefault();
-        
             let event = {
                 title,
                 location,
@@ -51,14 +53,21 @@ export default function FormEvent() {
 
     return (
         <>
-            <Alert show={show} variant="success" onClose={() => setShow(false)} dismissible>
+            <Alert style={{position: "absolute", top: 60}} show={show} variant="success" onClose={() => setShow(false)} dismissible>
                 <Alert.Heading>Event Has Been Added</Alert.Heading>
                     <p>
                     Please check on the dashboard or go directly to Home
                     </p>
             </Alert>
-            <div className="shadow px-5 py-5 rounded">
-                <div>
+            {
+                isLoading.status ? (
+                        <Spinner animation="grow" style={{position: "absolute"}} />
+                    ) : (
+                        <span></span>
+                    )
+            }
+            <div className="d-flex flex-column shadow px-5 py-5 rounded">
+                <div className='align-self-center mb-5'>
                     <h3>
                         Add Event
                     </h3>
@@ -85,7 +94,7 @@ export default function FormEvent() {
                         <Form.Group as={Col}>
                             <Form.Label>Date</Form.Label>
                             <div>
-                                <input required type='date' onChange={(e) => setDate(e.target.value)} />
+                                <Form.Control style={{height: 38, width: '100%', textAlign: "center"}} required type='date' onChange={(e) => setDate(e.target.value)} />
                             </div>
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
@@ -95,17 +104,17 @@ export default function FormEvent() {
                         <Form.Control required as="textarea" rows="3" defaultValue={notes} minLength="50" onChange={(e) => setNotes(e.target.value)} />
                         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group className='d-flex flex-row'>
+                    <Form.Group className='d-flex flex-row align-items-center'>
                         <Form.File required id="fileInput" label="Choose Image" accept="image/*" onChange={e => handleImageAsFile(e, setImageAsFile)} />
                         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                        <Button size="sm" style={{height: 50}} onClick={e => handleFirebaseUpload(e, imageAsFile, setImageAsUrl, setSubmit)}>Upload</Button>
+                        <Button variant="primary btn-sm h-25" onClick={e => handleFirebaseUpload(e, imageAsFile, setImageAsUrl, setSubmit, setIsLoading)}>
+                            Upload
+                        </Button>
                     </Form.Group>
                     <Form.Group>
-                        <Col>
-                            <Button variant="primary" type="submit" disabled={!submit.status}>
-                                Submit
-                            </Button>
-                        </Col>
+                        <Button variant="primary" type="submit" disabled={!submit.status}>
+                            Submit
+                        </Button>
                     </Form.Group>
                 </Form>
             </div>
