@@ -1,6 +1,6 @@
 import { storage } from './firebase'
 
-export const handleFirebaseUpload = (e, imageAsFile, setImageAsUrl) => {
+export const handleFirebaseUpload = (e, imageAsFile, setImageAsUrl, setSubmit) => {
     e.preventDefault()
     console.log('image uploading...')
     if(imageAsFile === '') {
@@ -16,6 +16,7 @@ export const handleFirebaseUpload = (e, imageAsFile, setImageAsUrl) => {
         storage.ref('images').child(imageAsFile.name).getDownloadURL()
           .then(fireBaseUrl => {
             setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+            setSubmit(prevObject => ({...prevObject, status: true}))
           })
       }
     )
