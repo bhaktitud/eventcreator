@@ -1,42 +1,43 @@
-import React, { useEffect } from 'react'
-import { getEvents } from '../store/actions'
+import React, { useEffect, useState } from 'react'
+import { getEvents, getPerPage } from '../store/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import TableForm from '../components/TableForm'
-import { Button } from 'react-bootstrap'
+import { Button, Pagination } from 'react-bootstrap'
 
 export default function Dashboard() {
 
     const dispatch = useDispatch()
+    const totalPages = useSelector(state => state.totalPages)
+    const dataTable = useSelector(state => state.dataTable)
     const events = useSelector(state => state.events)
-
+    const [page, setPage] = useState(0)
+    
     useEffect(() => {
         dispatch(getEvents())
-    }, [])
+        dispatch(getPerPage(page))
+    }, [page])
 
-    const totalpages = Math.ceil(events / 5)
+    const handleOnChangePages = (page) => {
+        setPage(page+1)
+    }
 
     return (
         <React.Fragment>
-            <div style={{marginTop: 20, marginBottom: 20, marginLeft: 20}}>
-                <input type="text" style={{marginRight: 20}} />
-                <Button variant="primary" type="submit" >
-                    Search
-                </Button>
-            </div>
-            <TableForm events={events} />
-            <nav>
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
+            <div className='d-flex flex-column'>
+                <TableForm events={events} dataTable={dataTable} />
+                <Pagination className="align-self-center">
                     {
-                        
+                        totalPages.map((page, index) => (
+                            <Pagination.Item 
+                                key={index}
+                                onClick={() => handleOnChangePages(page)}
+                            >
+                                {page+1}
+                            </Pagination.Item>
+                        ))
                     }
-                    <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+                </Pagination>
+            </div>
         </React.Fragment>
     )
 }

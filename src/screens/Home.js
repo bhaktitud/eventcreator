@@ -15,7 +15,7 @@ export default function Home() {
 
     return (
         <div 
-            className="d-flex flex-row flex-wrap justify-content-center align-items-center mt-3"
+            className="d-flex flex-row flex-wrap justify-content-center align-items-center mt-5"
         >
             {
                 events.length > 0 ? 
