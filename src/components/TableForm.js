@@ -20,7 +20,7 @@ export default function TableForm({events}) {
                 {
                     events.map((event, index) => (
                         <tr>
-                            <td>{index}</td>
+                            <td>{index + 1}</td>
                             <td>{event.title}</td>
                             <td>{event.location}</td>
                             <td>{event.date}</td>
