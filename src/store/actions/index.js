@@ -11,7 +11,7 @@ const itemPerPage = 5
 export const getEvents = () => {
     return (dispatch) => {
         axios
-            .get(`${baseURL}/events?`)
+            .get(`${baseURL}/events?_sort=date&_order=desc`)
             .then(({ data }) => {
                 dispatch(setEvents(data))
                 dispatch(setPages(data))
