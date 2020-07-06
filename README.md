@@ -1,3 +1,16 @@
+Tech used:
+1. firebase to handle image upload
+2. react bootstrap as css framework
+3. react-datepicker to handle date picker
+
+mock up server preparation: 
+1. ```sudo npm i -g json-server```
+2. create a db.json file in a folder name it as you want
+3. fill out the db.json file with a ```{"events":[]}```
+4. head to the folder directory, and run ```json-server --watch db.json```
+
+if the server run correctly then you can follow the instruction below to run the client-side
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
